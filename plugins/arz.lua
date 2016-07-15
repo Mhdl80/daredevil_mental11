@@ -24,3 +24,4 @@ return {
     "^([Aa]rz)$"
   }, 
   run = run 
+  }
