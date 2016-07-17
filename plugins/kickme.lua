@@ -1,37 +1,34 @@
-local function kick_user(user_id, chat_id)
-  local chat = 'chat#id'..chat_id
-  local user = 'user#id'..user_id
-  chat_del_user(chat, user, function (data, success, result)
-    if success ~= 1 then
-      send_msg(data.chat, 'Error while kicking user', ok_cb, nil)
+﻿local function run(msg, matches)
+if matches[1] == 'kickme' then
+local hash = 'kick:'..msg.to.id..':'..msg.from.id
+     redis:set(hash, "waite")
+      return '🔖Dear User ('..msg.from.username..')\nYour request their expulsion from the Group sended\nIf you agree with this request, the yes send'
     end
-  end, {chat=chat, user=user})
-end
 
-local function run (msg, matches)
-  local user = msg.from.id
-  local chat = msg.to.id
+    if msg.text then
+	local hash = 'kick:'..msg.to.id..':'..msg.from.id
+      if msg.text:match("^yes$") and redis:get(hash) == "waite" then
+	  redis:set(hash, "ok")
+	elseif msg.text:match("^no$") and redis:get(hash) == "waite" then
+	send_large_msg(get_receiver(msg), " ؟ are you sick")
+	  redis:del(hash, true)
 
-  if msg.to.type ~= 'chat' then
-    return "Not a chat group!"
-  elseif user == tostring(our_id) then
-    --[[ A robot must protect its own existence as long as such protection does
-    not conflict with the First or Second Laws. ]]--
-    return "I won't kick myself!"
-  elseif is_sudo(msg) then
-    return "I won't kick an admin!"
-  else
-    kick_user(user, chat)
-  end
-end
+      end
+    end
+	local hash = 'kick:'..msg.to.id..':'..msg.from.id
+	 if redis:get(hash) then
+        if redis:get(hash) == "ok" then
+         channel_kick("channel#id"..msg.to.id, "user#id"..msg.from.id, ok_cb, false)
+         return '❌Target user groups , according to your request ('..msg.to.title..') kicked out'
+        end
+      end
+    end
 
 return {
-  description = "Bot kicks user",
-  usage = {
-    "!kickme"
-  },
   patterns = {
-    "^!kickme$"
+  "kickme",
+  "^yes$",
+  "^no$"
   },
-  run = run
+  run = run,
 }
