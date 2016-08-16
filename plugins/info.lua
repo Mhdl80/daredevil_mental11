@@ -1,28 +1,28 @@
 local function callback_reply(extra, success, result)
 	--icon & rank ------------------------------------------------------------------------------------------------
 	userrank = "Member"
-	if tonumber(result.from.id) == 122774063 then
+	if tonumber(result.from.id) == 175636120 then
 		userrank = "Master ⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/master.webp", ok_cb, false)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin1(result.from.id) then
+	elseif is_admin2(result.from.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner(result.from.id, result.to.id) then
-		userrank = "Leader ⭐⭐"
+	elseif is_owner2(result.from.id, result.to.id) then
+		userrank = "Owner ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod(result.from.id, result.to.id) then
+	elseif is_momod2(result.from.id, result.to.id) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.from.id) == tonumber(our_id) then
-		userrank = "Umbrella-Cp ⭐⭐⭐⭐⭐⭐"
+		userrank = "Signal ⭐⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/umb.webp", ok_cb, false)
 	elseif result.from.username then
 		if string.sub(result.from.username:lower(), -3) == "bot" then
 			userrank = "API Bot"
-			send_document(org_chat_id,"umbrella/stickers/apt.webp", ok_cb, false)
+			send_document(org_chat_id,"umbrella/stickers/api.webp", ok_cb, false)
 		end
 	end
 	--custom rank ------------------------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ local function callback_reply(extra, success, result)
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.from.phone then
-			number = "0"..string.sub(result.from.phone, 3)
+			number = "+"..string.sub(result.from.phone, 3)
 			if string.sub(result.from.phone, 0,2) == '98' then
 				number = number.."\nکشور: جمهوری اسلامی ایران"
 				if string.sub(result.from.phone, 0,4) == '9891' then
@@ -154,19 +154,23 @@ local function callback_reply(extra, success, result)
 		end
 	end
 	--info ------------------------------------------------------------------------------------------------
-	info = "نام کامل: "..string.gsub(result.from.print_name, "_", " ").."\n"
-	.."نام کوچک: "..(result.from.first_name or "-----").."\n"
-	.."نام خانوادگی: "..(result.from.last_name or "-----").."\n\n"
-	.."شماره موبایل: "..number.."\n"
-	.."یوزرنیم: @"..(result.from.username or "-----").."\n"
-	.."آی دی: "..result.from.id.."\n\n"
-	.."مقام: "..usertype.."\n"
-	.."جایگاه: "..userrank.."\n\n"
-	.."رابط کاربری: "..hardware.."\n"
-	.."تعداد پیامها: "..user_info.msgs.."\n"
-	.."نوع پیام: "..msg_type.."\n\n"
-	.."نام گروه: "..string.gsub(result.to.print_name, "_", " ").."\n"
-	.."آی دی گروه: "..result.to.id
+			local url , res = http.request('http://api.gpmod.ir/time/')
+            if res ~= 200 then return "No connection" end
+            local jdat = json:decode(url)
+			local info = "نام کامل: "..string.gsub(msg.from.print_name, "_", " ").."\n"
+					.."نام کوچک: "..(msg.from.first_name or "-----").."\n"
+					.."نام خانوادگی: "..(msg.from.last_name or "-----").."\n\n"
+					.."شماره موبایل: "..number.."\n"
+					.."یوزرنیم: @"..(msg.from.username or "-----").."\n\n"
+					.."ساعت: "..jdat.FAtime.."\n"
+					.."تاريخ: "..jdat.FAdate.."\n"
+					.."آی دی: "..msg.from.id.."\n\n"
+					.."مقام: "..usertype.."\n"
+					.."جایگاه: "..userrank.."\n\n"
+					.."رابط کاربری: "..hardware.."\n"
+					.."تعداد پیامها: "..user_info.msgs.."\n\n"
+					.."نام گروه: "..string.gsub(msg.to.print_name, "_", " ").."\n"
+					.."آی دی گروه: "..msg.to.id
 	send_large_msg(org_chat_id, info)
 end
 
@@ -175,23 +179,23 @@ local function callback_res(extra, success, result)
 		return send_large_msg(org_chat_id, "یوزرنیم وارد شده اشتباه است")
 	end
 	--icon & rank ------------------------------------------------------------------------------------------------
-	if tonumber(result.id) == 122774063 then
+	if tonumber(result.id) == 175636120 then
 		userrank = "Master ⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/master.webp", ok_cb, false)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin1(result.id) then
+	elseif is_admin2(result.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner(result.id, extra.chat2) then
-		userrank = "Leader ⭐⭐"
+	elseif is_owner2(result.id, extra.chat2) then
+		userrank = "Owner ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod(result.id, extra.chat2) then
+	elseif is_momod2(result.id, extra.chat2) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.id) == tonumber(our_id) then
-		userrank = "Umbrella-Cp ⭐⭐⭐⭐⭐⭐"
+		userrank = "Signal ⭐⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/umb.webp", ok_cb, false)
 	elseif result.from.username then
 		if string.sub(result.from.username:lower(), -3) == "bot" then
@@ -211,7 +215,7 @@ local function callback_res(extra, success, result)
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.phone then
-			number = "0"..string.sub(result.phone, 3)
+			number = "+"..string.sub(result.phone, 3)
 			if string.sub(result.phone, 0,2) == '98' then
 				number = number.."\nکشور: جمهوری اسلامی ایران"
 				if string.sub(result.phone, 0,4) == '9891' then
@@ -275,23 +279,23 @@ local function callback_info(extra, success, result)
 		return send_large_msg(org_chat_id, "آی دی وارد شده اشتباه است")
 	end
 	--icon & rank ------------------------------------------------------------------------------------------------
-	if tonumber(result.id) == 122774063 then
+	if tonumber(result.id) == 175636120 then
 		userrank = "Master ⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/master.webp", ok_cb, false)
 	elseif is_sudo(result) then
 		userrank = "Sudo ⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/sudo.webp", ok_cb, false)
-	elseif is_admin1(result.id) then
+	elseif is_admin2(result.id) then
 		userrank = "Admin ⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/admin.webp", ok_cb, false)
-	elseif is_owner(result.id, extra.chat2) then
-		userrank = "Leader ⭐⭐"
+	elseif is_owner2(result.id, extra.chat2) then
+		userrank = "Owner ⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/leader.webp", ok_cb, false)
-	elseif is_momod(result.id, extra.chat2) then
+	elseif is_momod2(result.id, extra.chat2) then
 		userrank = "Moderator ⭐"
 		send_document(org_chat_id,"umbrella/stickers/mod.webp", ok_cb, false)
 	elseif tonumber(result.id) == tonumber(our_id) then
-		userrank = "Umbrella-Cp ⭐⭐⭐⭐⭐⭐"
+		userrank = "Signal ⭐⭐⭐⭐⭐⭐"
 		send_document(org_chat_id,"umbrella/stickers/umb.webp", ok_cb, false)
 	elseif result.from.username then
 		if string.sub(result.from.username:lower(), -3) == "bot" then
@@ -311,7 +315,7 @@ local function callback_info(extra, success, result)
 	--phone ------------------------------------------------------------------------------------------------
 	if access == 1 then
 		if result.phone then
-			number = "0"..string.sub(result.phone, 3)
+			number = "+"..string.sub(result.phone, 3)
 			if string.sub(result.phone, 0,2) == '98' then
 				number = number.."\nکشور: جمهوری اسلامی ایران"
 				if string.sub(result.phone, 0,4) == '9891' then
@@ -388,6 +392,7 @@ local function callback_info(extra, success, result)
 	.."نام خانوادگی: "..(result.last_name or "-----").."\n\n"
 	.."شماره موبایل: "..number.."\n"
 	.."یوزرنیم: @"..(result.username or "-----").."\n"
+	.."ساعت: "..msg.from.time.."\n"
 	.."آی دی: "..result.id.."\n\n"
 	.."مقام: "..usertype.."\n"
 	.."جایگاه: "..userrank.."\n\n"
@@ -396,16 +401,16 @@ end
 
 local function run(msg, matches)
 	local data = load_data(_config.moderation.data)
-	org_chat_id = "chat#id"..msg.to.id
+	org_channel_id = "channel#id"..msg.to.id
 	if is_sudo(msg) then
 		access = 1
 	else
 		access = 0
 	end
-	if matches[1] == '/infodel' and is_sudo(msg) then
+	if matches[1] == 'infodel' and is_sudo(msg) then
 		azlemagham = io.popen('rm ./info/'..matches[2]..'.txt'):read('*all')
 		return 'از مقام خود عزل شد'
-	elseif matches[1] == '/info' and is_sudo(msg) then
+	elseif matches[1] == 'Info' and is_sudo(msg) then
 		local name = string.sub(matches[2], 1, 50)
 		local text = string.sub(matches[3], 1, 10000000000)
 		local file = io.open("./info/"..name..".txt", "w")
@@ -442,17 +447,17 @@ local function run(msg, matches)
 			local um_hash = 'msgs:'..msg.from.id..':'..msg.to.id
 			user_info.msgs = tonumber(redis:get(um_hash) or 0)
 			--icon & rank ------------------------------------------------------------------------------------------------
-			if tonumber(msg.from.id) == 122774063 then
+			if tonumber(msg.from.id) == 175636120 then
 				userrank = "Master ⭐⭐⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/master.webp", ok_cb, false)
 			elseif is_sudo(msg) then
 				userrank = "Sudo ⭐⭐⭐⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/sudo.webp", ok_cb, false)
-			elseif is_admin1(msg) then
+			elseif is_admin(msg) then
 				userrank = "Admin ⭐⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/admin.webp", ok_cb, false)
 			elseif is_owner(msg) then
-				userrank = "Leader ⭐⭐"
+				userrank = "Owner ⭐⭐"
 				send_document("chat#id"..msg.to.id,"umbrella/stickers/leader.webp", ok_cb, false)
 			elseif is_momod(msg) then
 				userrank = "Moderator ⭐"
@@ -463,7 +468,7 @@ local function run(msg, matches)
 			--number ------------------------------------------------------------------------------------------------
 			if msg.from.phone then
 				numberorg = string.sub(msg.from.phone, 3)
-				number = "****0"..string.sub(numberorg, 0,6)
+				number = "****+"..string.sub(numberorg, 0,6)
 				if string.sub(msg.from.phone, 0,2) == '98' then
 					number = number.."\nکشور: جمهوری اسلامی ایران"
 					if string.sub(msg.from.phone, 0,4) == '9891' then
@@ -485,12 +490,17 @@ local function run(msg, matches)
 			else
 				number = "-----"
 			end
-			--info ------------------------------------------------------------------------------------------------
+			--time ------------------------------------------------------------------------------------------------
+			local url , res = http.request('http://api.gpmod.ir/time/')
+            if res ~= 200 then return "No connection" end
+            local jdat = json:decode(url)
 			local info = "نام کامل: "..string.gsub(msg.from.print_name, "_", " ").."\n"
 					.."نام کوچک: "..(msg.from.first_name or "-----").."\n"
 					.."نام خانوادگی: "..(msg.from.last_name or "-----").."\n\n"
 					.."شماره موبایل: "..number.."\n"
-					.."یوزرنیم: @"..(msg.from.username or "-----").."\n"
+					.."یوزرنیم: @"..(msg.from.username or "-----").."\n\n"
+					.."ساعت : "..jdat.FAtime.."\n"
+					.."تاريخ :"..jdat.FAdate.."\n"
 					.."آی دی: "..msg.from.id.."\n\n"
 					.."مقام: "..usertype.."\n"
 					.."جایگاه: "..userrank.."\n\n"
@@ -507,25 +517,22 @@ end
 
 return {
 	description = "User Infomation",
-	usagehtm = '<tr><td align="center">info</td><td align="right">اطلاعات کاملی را راجبه شما، گروهی که در آن هستید و مقامتان میدهد همچنین با رپلی کردن میتوانید اطلاعات فرد مورد نظر را نیز ببینید</td></tr>'
-	..'<tr><td align="center">/info مقام آیدی</td><td align="right">اعطای مقام به شخص به جر مقامهای اصلی</td></tr>'
-	..'<tr><td align="center">/infodel آیدی</td><td align="right">حذف مقام اعطا شده</td></tr>',
 	usage = {
 		user = {
-			"info: اطلاعات شما",
-			"info (reply): اطلاعات دیگران",
+			"/info: اطلاعات شما",
+			"/info (reply): اطلاعات دیگران",
 			},
 		sudo = {
-			"/info (id) (txt) : اعطای مقام",
-			"/infodel : حذف مقام",
+			"Info (id) (txt) : اعطای مقام",
+			"infodel : حذف مقام",
 			},
 		},
 	patterns = {
-		"^(/infodel) (.*)$",
-		"^(/info) ([^%s]+) (.*)$",
-		"^([Ii]nfo) (.*)$",
-		"^(info)$",
-		"^(Info)$",
+		"^(infodel) (.*)$",
+		"^(Info) ([^%s]+) (.*)$",
+		"^[!/#](info) (.*)$",
+		"^[!/#](info)$",
+		"^[!/#](Info)$",
 	},
 	run = run,
 }
