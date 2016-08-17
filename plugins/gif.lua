@@ -1,76 +1,24 @@
--- Idea by https://github.com/asdofindia/telegram-bot/
--- See http://api.giphy.com/
-
-do
-
-local BASE_URL = 'http://api.giphy.com/v1'
-local API_KEY = 'dc6zaTOxFJmzC' -- public beta key
-
-local function get_image(response)
-  local images = json:decode(response).data
-  if #images == 0 then return nil end -- No images
-  local i = math.random(#images)
-  local image =  images[i] -- A random one
-
-  if image.images.downsized then
-    return image.images.downsized.url
-  end
-
-  if image.images.original then
-    return image.original.url
-  end
-
-  return nil
-end
-
-local function get_random_top()
-  local url = BASE_URL.."/gifs/trending?api_key="..API_KEY
-  local response, code = http.request(url)
-  if code ~= 200 then return nil end
-  return get_image(response)
-end
-
-local function search(text)
-  text = URL.escape(text)
-  local url = BASE_URL.."/gifs/search?q="..text.."&api_key="..API_KEY
-  local response, code = http.request(url)
-  if code ~= 200 then return nil end
-  return get_image(response)
-end
+--[[
+Convertor TEXT to GIF
+writed Via @ubuntu_14
+in channel : @UB_CH
+@ValtMan
+]]
 
 local function run(msg, matches)
-  local gif_url = nil
-  
-  -- If no search data, a random trending GIF will be sent
-  if matches[1] == "!gif" or matches[1] == "!giphy" then
-    gif_url = get_random_top()
-  else
-    gif_url = search(matches[1])
-  end
-
-  if not gif_url then 
-    return "Error: GIF not found"
-  end
-
-  local receiver = get_receiver(msg)
-  print("GIF URL"..gif_url)
-  
-  send_document_from_url(receiver, gif_url)
-end
-
+  local text = URL.escape(matches[2])
+  local url2 = 'http://www.flamingtext.com/net-fu/image_output.cgi?_comBuyRedirect=false&script=blue-fire&text='..text..'&symbol_tagname=popular&fontsize=70&fontname=futura_poster&fontname_tagname=cool&textBorder=15&growSize=0&antialias=on&hinting=on&justify=2&letterSpacing=0&lineSpacing=0&textSlant=0&textVerticalSlant=0&textAngle=0&textOutline=off&textOutline=false&textOutlineSize=2&textColor=%230000CC&angle=0&blueFlame=on&blueFlame=false&framerate=75&frames=5&pframes=5&oframes=4&distance=2&transparent=off&transparent=false&extAnim=gif&animLoop=on&animLoop=false&defaultFrameRate=75&doScale=off&scaleWidth=240&scaleHeight=120&&_=1469943010141'
+  local title , res = http.request(url2)
+  local jdat = json:decode(title)
+  local gif = jdat.src
+  		 local  file = download_to_file(gif,'t2g.gif')
+			send_document(get_receiver(msg), file, ok_cb, false)
+  end 
 return {
-  description = "GIFs from telegram with Giphy API",
-  usage = {
-    "!gif (term): Search and sends GIF from Giphy. If no param, sends a trending GIF.",
-    "!giphy (term): Search and sends GIF from Giphy. If no param, sends a trending GIF."
-    },
+  usage = '',
   patterns = {
-    "^!gif$",
-    "^!gif (.*)",
-    "^!giphy (.*)",
-    "^!giphy$"
+    "^(gif) (.*)$",
+	
   },
   run = run
 }
-
-end
