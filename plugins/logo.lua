@@ -19,5 +19,5 @@ return {
   },
   run = run
 }
---@silveloper_mental
---devilteam(-SBSS)
+--@sudo_tm
+--iteam(AMIR-SBSS)
