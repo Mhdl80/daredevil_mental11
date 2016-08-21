@@ -258,8 +258,8 @@ return {
    "^#(insta) ([Hh]ttp://instagram.com/p/)([^%s]+)$",
    "^#(insta) (.*)$",    
    "^#(set) ([^%s]+) (.*)$",
-   "^#(getl) (.*)$",
-   "^#(stickerl) (.*)$",
+   "^#(get) (.*)$",
+   "^#(sticker) (.*)$",
     },
   run = run
 }
