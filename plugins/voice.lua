@@ -9,15 +9,15 @@ local text = matches[1]
 
   while b ~= 0 do
     textc = text:trim()
-    text,b = text:gsub(' ','.')
+    text,b = text:gsub(' ','.') -- Fixing space problem ;)
     
     
-  if msg.to.type == 'user' then 
+  if msg.to.type == 'user' then --Dont answer on private chat !
       return nil
       else
   local url = "http://tts.baidu.com/text2audio?lan=en&ie=UTF-8&text="..textc
   local receiver = get_receiver(msg)
-  local file = download_to_file(url,'Hextor.ogg')
+  local file = download_to_file(url,'text.ogg')
       send_audio('chat#id'..msg.to.id, file, ok_cb , false)
 end
 end
@@ -30,8 +30,10 @@ return {
   patterns = {
     "^!voice +(.*)$",
     "^/voice +(.*)$",
-	"^#voice +(.*)$",
-
+    "^!tts +(.*)$",
+    "^/tts +(.*)$",
+    "^!ts +(.*)$",
+    "^/ts +(.*)$",
   },
   run = run
 }
