@@ -6,18 +6,12 @@ end
 
 return {
 patterns = {
-"^!share$",
 "^share$",
-"^Share$",
-"^/share$",
-"^/number$",
-"^!share$",
-"^!number$",
-"^Number$",
+"^[!/#]share$",
 "^number$",
-"^phone$",
+"^[!/#]number$",
 "^Phone$",
-"^/phone$",
+"^[!/#]phone$",
 
 },
 run = run
