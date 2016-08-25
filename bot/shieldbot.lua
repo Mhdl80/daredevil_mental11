@@ -280,6 +280,14 @@ Realm Commands:
 !creategroup [Name]
 Create a group
 
+!clean members
+
+kick all
+
+!clean all
+
+clean all messages
+
 !createrealm [Name]
 Create a realm
 
@@ -362,6 +370,14 @@ Commands list :
 
 !kick [username|id]
 You can also do it by reply
+
+!clean members
+
+kick all
+
+!clean all
+
+clean all messages
 
 !ban [ username|id]
 You can also do it by reply
@@ -491,6 +507,14 @@ SuperGroup Commands:
 
 !gpinfo
 Displays general info about the SuperGroup
+
+!clean members
+
+kick all
+
+!clean all
+
+clean all messages
 
 !admins
 Returns SuperGroup admins list
