@@ -19,7 +19,7 @@ return {
   },
   run = run
 }
--- by @sudo1
--- ch: @specialteam_ch
--- کپی بدون ذکر منبع حرام است.
+-- by @Mhdl80
+-- ch: @silveloper_mental
+-- کپی بدون ذکر منبع حرام نیست.
     
