@@ -280,6 +280,9 @@ Realm Commands:
 !creategroup [Name]
 Create a group
 
+!muteall [time] [time] [time]
+Muteall with time
+
 !clean members
 kick all
 
@@ -371,6 +374,9 @@ You can also do it by reply
 
 !clean members
 kick all
+
+!muteall [time] [time] [time]
+Muteall with time
 
 !clean all
 clean all messages
@@ -503,6 +509,9 @@ SuperGroup Commands:
 
 !gpinfo
 Displays general info about the SuperGroup
+
+!muteall [time] [time] [time]
+Muteall with time
 
 !clean members
 kick all
