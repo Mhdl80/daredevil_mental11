@@ -1,5 +1,7 @@
-﻿-- by @gpsudo 
--- channel : @forcetg_ch function pre_process(msg)
+-- by @Blackwolf_admin 
+-- channel : @open_sources
+do
+local function pre_process(msg)
  local hash = 'muteall:'..msg.to.id
   if redis:get(hash) and msg.to.type == 'channel' and not is_momod(msg)  then
    delete_msg(msg.id, ok_cb, false)
