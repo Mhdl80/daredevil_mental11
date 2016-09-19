@@ -83,7 +83,7 @@ end
       if matches[1] == "sticker" then 
        redis:get("photo:sticker") 
         load_photo(msg.reply_id, tosticker, msg) 
-        return "For Spherobot thanks to amirho3inf :)" 
+        return "For mentalbot thanks to Mhdl80 :)" 
       elseif matches[1] == "photo" then 
        redis:get("sticker:photo") 
         load_document(msg.reply_id, toimage, msg) 
