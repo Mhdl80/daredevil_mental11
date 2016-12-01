@@ -285,7 +285,7 @@ end
 function run(msg, matches)
 
   if not is_chat_msg(msg) then
-	    return "This is not a group chat."
+	    return ""
 	end
 
   local data = load_data(_config.moderation.data)
