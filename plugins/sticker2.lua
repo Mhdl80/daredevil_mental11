@@ -67,7 +67,7 @@ local function run(msg, matches)
 local url = 'http://latex.codecogs.com/png.latex?'..'\\dpi{'..size..'}%20\\huge%20\\'..font..'{{\\color{'..color..'}'..text..'}}' 
 local file = download_to_file(url,'file.webp') 
         send_document(msg.to.id , file, ok_cb, false) 
-        return "For mentalbot thanks to amirho3inf :)" 
+        return "For mentalbot thanks to Mhdl80 :)" 
 end
 
     local receiver = get_receiver(msg) 
